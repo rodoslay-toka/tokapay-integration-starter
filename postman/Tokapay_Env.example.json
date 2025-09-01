@@ -1,0 +1,12 @@
+{
+  "name": "Tokapay Env Example",
+  "values": [
+    {"key":"base_url","value":"https://openapi.paypay.mx","type":"text", "enabled": true},
+    {"key":"client_id","value":"your_client_id","type":"text", "enabled": true},
+    {"key":"key_version","value":"1","type":"text", "enabled": true},
+    {"key":"shop_id","value":"your_shop_id","type":"text", "enabled": true},
+    {"key":"terminal_id","value":"your_terminal_id","type":"text", "enabled": true},
+    {"key":"private_key_pem","value":"<paste PKCS#8 PEM here>","type":"text", "enabled": true}
+  ],
+  "_postman_variable_scope": "environment"
+}
