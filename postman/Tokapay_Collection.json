@@ -1,74 +1,38 @@
 {
-  "info": {
-    "_postman_id": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
-    "name": "Tokapay API",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-  },
+  "info": { "name": "Tokapay Collection", "_postman_id": "tokapay-collection", "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json" },
   "item": [
-    {
-      "name": "Create Dynamic QR",
-      "event": [
-        {
-          "listen": "prerequest",
-          "script": {
-            "exec": [
-              "// This script is a placeholder for the logic required to generate a valid signature.",
-              "// The actual implementation requires a JavaScript crypto library capable of RSA-SHA256.",
-              "// Postman's built-in 'pm.sendRequest' can be used to call a local service or a serverless function to perform the signing.",
-              "",
-              "// 1. Generate Request-Id and Request-Time",
-              "const requestId = pm.variables.replaceIn('{{$guid}}');",
-              "const requestTime = Date.now().toString();",
-              "pm.collectionVariables.set('request_id', requestId);",
-              "pm.collectionVariables.set('request_time', requestTime);",
-              "",
-              "// 2. Get variables",
-              "const method = pm.request.method;",
-              "const path = pm.request.url.getPath();",
-              "const clientId = pm.environment.get('client_id');",
-              "const body = pm.request.body.raw;",
-              "const privateKey = pm.environment.get('private_key_pem');",
-              "const keyVersion = pm.environment.get('key_version');",
-              "",
-              "// 3. Construct the content string",
-              "const content = `${method}.${path}.${clientId}.${requestId}.${requestTime}.${body}`;",
-              "console.log('Content for signing:', content);",
-              "",
-              "// 4. Sign the content string (PSEUDO-CODE)",
-              "// This part cannot be directly implemented in Postman's sandbox without external libraries.",
-              "// You would need a library like 'jsrsasign' or similar.",
-              "// const signature = signWithRsaSha256(content, privateKey);",
-              "// const encodedSignature = urlEncode(base64url(signature));",
-              "// const finalSignatureHeader = `algorithm=RSA256,keyVersion=${keyVersion},signature=${encodedSignature}`;",
-              "",
-              "// 5. Set headers",
-              "// pm.request.headers.add({ key: 'Signature', value: finalSignatureHeader });",
-              "console.error('SIGNATURE GENERATION SKIPPED: Postman sandbox lacks native RSA-SHA256 signing. Please use the provided language helpers or an external signing service.');"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "POST",
-        "header": [
-          { "key": "Client-Id", "value": "{{client_id}}" },
-          { "key": "Request-Id", "value": "{{request_id}}" },
-          { "key": "Request-Time", "value": "{{request_time}}" },
-          { "key": "Signature", "value": "SIGNATURE_NEEDS_TO_BE_GENERATED" }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\"productCode\":\"CSB_DIRECTPAY_OFFLINE_STANDARD\",\"order\":{\"orderTitle\":\"Coffee\",\"merchantTransId\":\"m-{{$timestamp}}\",\"orderAmount\":{\"value\":\"1500\",\"currency\":\"MXN\"}},\"shopId\":\"{{shop_id}}\"}",
-          "options": { "raw": { "language": "json" } }
-        },
-        "url": {
-          "raw": "{{base_url}}/v1/acquiring/qr/create",
-          "host": ["{{base_url}}"],
-          "path": ["v1", "acquiring", "qr", "create"]
-        }
-      },
-      "response": []
+    { "name": "Create Dynamic QR", "request": { "method": "POST", "header": [
+      { "key": "Client-Id", "value": "{{client_id}}" },
+      { "key": "Request-Id", "value": "" },
+      { "key": "Request-Time", "value": "" },
+      { "key": "Signature", "value": "" },
+      { "key": "Content-Type", "value": "application/json" }
+    ], "url": "{{base_url}}/v1/acquiring/qr/create", "body": { "mode": "raw", "raw": "{\"productCode\":\"CSB_DIRECTPAY_OFFLINE_STANDARD\",\"order\":{\"orderTitle\":\"Coffee\",\"merchantTransId\":\"m-{{timestamp}}\",\"orderAmount\":{\"value\":\"1500\",\"currency\":\"MXN\"}},\"shopId\":\"{{shop_id}}\"}" } } }
+  ],
+  "event": [{
+    "listen": "prerequest",
+    "script": {
+      "type": "text/javascript",
+      "exec": [
+        "// Pre-request Script: build signature headers (documentation & placeholder)",
+        "const method = 'POST';",
+        "const path = pm.request.url.getPath();",
+        "const clientId = pm.environment.get('client_id');",
+        "const keyVersion = pm.environment.get('key_version') || '1';",
+        "const rid = require('uuid').v4().replace(/-/g,'');",
+        "const rtime = Date.now().toString();",
+        "let bodyJson = '{}';",
+        "if (pm.request.body?.mode === 'raw' && pm.request.body.raw) {",
+        "  bodyJson = JSON.stringify(JSON.parse(pm.request.body.raw)); // compact",
+        "}",
+        "const content = `${method}.${path}.${clientId}.${rid}.${rtime}.${bodyJson}`;",
+        "// TODO: sign `content` using RSA-SHA256 (PKCS#1 v1.5) with base64url(no padding), then URL-encode.",
+        "// Place the result into:",
+        "// const signatureHeader = `algorithm=RSA256,keyVersion=${keyVersion},signature=${encoded}`;",
+        "pm.request.headers.upsert({ key: 'Request-Id', value: rid });",
+        "pm.request.headers.upsert({ key: 'Request-Time', value: rtime });",
+        "// pm.request.headers.upsert({ key: 'Signature', value: signatureHeader });"
+      ]
     }
-  ]
+  }]
 }

@@ -1,27 +1,23 @@
 {
   "name": "tokapay-integration-starter",
-  "version": "1.0.0",
-  "description": "Tokapay Integration Starter Kit",
-  "main": "index.js",
+  "private": true,
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "node:createDynamicQr": "ts-node examples/node/createDynamicQr.ts",
+    "node:paymentCreate": "ts-node examples/node/paymentCreate.ts",
+    "node:paymentInquiry": "ts-node examples/node/paymentInquiry.ts",
+    "node:paymentClose": "ts-node examples/node/paymentClose.ts",
+    "node:refundApply": "ts-node examples/node/refundApply.ts",
+    "node:refundInquiry": "ts-node examples/node/refundInquiry.ts",
+    "node:reconGet": "ts-node examples/node/reconGet.ts"
   },
-  "keywords": [
-    "tokapay",
-    "payment",
-    "integration"
-  ],
-  "author": "",
-  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.14.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
+  },
   "dependencies": {
     "axios": "^1.7.2",
     "dotenv": "^16.4.5"
-  },
-  "devDependencies": {
-    "@types/node": "^20.19.11",
-    "eslint": "^9.4.0",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.4.5"
-  },
-  "type": "module"
+  }
 }
