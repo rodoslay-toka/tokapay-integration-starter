@@ -1,6 +1,6 @@
 import { post, SHOP, TERMINAL } from "./common.js";
 // Static QR terminal example (change productCode to BSC_PAYMENT_CODE for B-scan-C and add paymentCode)
-const path = "/v1/acquiring/payment/create";
+const path = "/v2/acquiring/payment/create";
 const body = {
   productCode: "CSB_DIRECTPAY_OFFLINE_TERMINALQR",
   shopId: SHOP,
