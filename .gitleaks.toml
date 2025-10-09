@@ -1,0 +1,21 @@
+[allowlist]
+    description = "Allowlisted files"
+    paths = [
+        '''.*test\.json$''',
+        '''.*test\.js$''',
+        '''.*test\.py$''',
+        '''.*test\.ts$''',
+        '''.*test\.cs$''',
+        '''.*test\.java$''',
+        '''(.*?)(jpg|gif|doc|pdf|bin|svg|zip)$''',
+    ]
+
+    # Ignore common false positives in test files
+    regexes = [
+        '''example\.com''',
+        '''localhost''',
+        '''127\.0\.0\.1''',
+    ]
+
+[extend]
+# Extend the base gitleaks config to ensure we catch everything

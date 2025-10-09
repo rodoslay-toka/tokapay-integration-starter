@@ -6,11 +6,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for all branches and tags
 
       - name: Secret scan (gitleaks)
         uses: zricethezav/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          args: "--no-banner -v"
+          config-path: .gitleaks.toml
 
       - name: Node env check
         uses: actions/setup-node@v4
