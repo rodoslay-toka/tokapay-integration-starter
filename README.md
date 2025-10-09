@@ -4,7 +4,7 @@
 
 This template gives partner developers a working starter for Tokapay acquiring APIs with:
 - **Signing helpers** (RSA-SHA256) for Node, Python, Java, and .NET
-- **7 runnable examples** (Node & Python): create dynamic QR, create payment order, inquiry, close, refund apply, refund inquiry, recon get
+- **9 runnable examples** (Node & Python): create dynamic QR, create payment order, inquiry, close, refund, refund query, recon get, user info, merchant info
 - **Postman collection** with pre-request scaffolding
 - **Docs** on signing, API catalog, flows/timing
 - **CI** secret scan + sanity tests
@@ -37,13 +37,22 @@ Then:
 **Response verification**  
 Build `<Client-Id>.<Response-Time>.<Response-Body>` and verify with Tokapay **public key** before trusting the body.
 
-## API endpoints (base: `https://openapi.paypay.mx`)
-- `POST /v1/acquiring/qr/create` → Dynamic QR
-- `POST /v1/acquiring/payment/create` → Static QR or B-scan-C (Payment Code)
-- `POST /v1/acquiring/payment/inquiry` → Poll status
-- `POST /v1/acquiring/payment/close` → Close unpaid order
-- `POST /v1/acquiring/refund/apply` → Start refund
-- `POST /v1/acquiring/refund/inquiry` → Check refund status
+## API endpoints
+Base URLs:
+- Production: `https://openapi.paypay.mx`
+- Testing (SIT): `https://openapi.sit.toka.whalecloud.ltd`
+
+V2 Endpoints:
+- `POST /v2/acquiring/qr/create` → Dynamic QR
+- `POST /v2/acquiring/payment/create` → Static QR or B-scan-C (Payment Code)
+- `POST /v2/acquiring/payment/inquiry` → Poll status
+- `POST /v2/acquiring/payment/close` → Close unpaid order
+- `POST /v2/acquiring/payment/refund` → Start refund
+- `POST /v2/acquiring/payment/refundQuery` → Check refund status
+- `POST /v2/acquiring/user/info` → Get user information
+- `POST /v2/acquiring/merchant/info` → Get merchant information
+
+V1 Endpoints:
 - `POST /v1/acquiring/recon/get` → Get recon file links
 
 ## Flows & timing
